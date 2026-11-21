@@ -41,7 +41,7 @@ class Snake():
 
     def move_body(self):
         if self.body:
-            for i in range(len(self.body), -1, 0, -1):
+            for i in range(len(self.body) - 1, 0, -1):
                 self.body[i].center = self.body[i - 1].center
             self.body[0].center = self.head.center
 
@@ -66,7 +66,7 @@ class Snake():
 
     def add_body(self, food: pygame.Rect):
         if food.colliderect(self.head):
-            new = pygame.rect(*self.head.center, self.body_size, self.body_size)
+            new = pygame.Rect(*self.head.center, self.body_size, self.body_size)
             self.body.append(new)
 
 background = pygame.Surface((WIDTH, HEIGHT))
@@ -76,14 +76,20 @@ for y in range(0, HEIGHT, 50):
     pygame.draw.line(background, (60, 60, 60), (0, y), (WIDTH, y))
             
 snake = Snake(WIDTH, HEIGHT, HEAD_SIZE)
+food = pygame.Rect(100, 100, 30, 30)
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
             
     screen.blit(background, (0, 0))
+    pygame.draw.rect(screen, (200, 200, 100), food)
 
     snake.draw_head(screen)
+    snake.draw_body(screen)
+    snake.add_body(food)
+    snake.move_body()
     snake.move_head()
     snake.change_direction()
     
