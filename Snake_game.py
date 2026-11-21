@@ -20,6 +20,7 @@ class Snake():
         x = random.randint(0, screen_width - head_size)
         y = random.randint(0, screen_height - head_size)
         self.head = pygame.Rect(x, y, head_size, head_size)
+        self.body: list[pygame.Rect] = []
         self.body = []
         self.body_size = int(head_size * 0.8)
         self.dx = 0
@@ -29,6 +30,10 @@ class Snake():
         
     def draw_head(self, screen):
         pygame.draw.rect(screen, self.color, self.head)
+
+    def draw_body(self, screen: pygame.Surface):
+        for piece in self.body:
+            pygame.draw.rect(screen, self.color, piece)
         
     def move_head(self):
         self.head.x += self.dx * self.speed
