@@ -69,6 +69,14 @@ class Snake():
             new = pygame.Rect(*self.head.center, self.body_size, self.body_size)
             self.body.append(new)
 
+    def draw(self):
+        snake.draw_head(screen)
+        snake.draw_body(screen)
+
+    def move(self):
+        snake.move_body()
+        snake.move_head()
+
 background = pygame.Surface((WIDTH, HEIGHT))
 background.fill((30, 30, 30))
 
@@ -86,11 +94,9 @@ while True:
     screen.blit(background, (0, 0))
     pygame.draw.rect(screen, (200, 200, 100), food)
 
-    snake.draw_head(screen)
-    snake.draw_body(screen)
+    snake.draw()
     snake.add_body(food)
-    snake.move_body()
-    snake.move_head()
+    snake.move()
     snake.change_direction()
     
     pygame.display.update()
