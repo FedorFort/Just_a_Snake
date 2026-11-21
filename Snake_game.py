@@ -38,7 +38,13 @@ class Snake():
     def move_head(self):
         self.head.x += self.dx * self.speed
         self.head.y += self.dy * self.speed
-        
+
+    def move_body(self):
+        if self.body:
+            for i in range(len(self.body), -1, 0, -1):
+                self.body[i].center = self.body[i - 1].center
+            self.body[0].center = self.head.center
+
     def change_direction(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
