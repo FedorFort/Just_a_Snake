@@ -64,6 +64,11 @@ class Snake():
                 self.dx = 1
                 self.dy = 0
 
+    def add_body(self, food: pygame.Rect):
+        if food.colliderect(self.head):
+            new = pygame.rect(*self.head.center, self.body_size, self.body_size)
+            self.body.append(new)
+
 background = pygame.Surface((WIDTH, HEIGHT))
 background.fill((30, 30, 30))
 
