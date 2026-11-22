@@ -1,5 +1,6 @@
 import random
 import pygame
+from food import Food
 
 pygame.init()
 
@@ -64,10 +65,10 @@ class Snake():
                 self.dx = 1
                 self.dy = 0
 
-    def add_body(self, food: pygame.Rect):
-        if food.colliderect(self.head):
-            new = pygame.Rect(*self.head.center, self.body_size, self.body_size)
-            self.body.append(new)
+    def grow(self):
+        new = pygame.Rect(*self.head.center, self.body_size, self.body_size)
+        new.center = self.head.center
+        self.body.append(new)
 
     def draw(self, screen: pygame.Surface):
         self.draw_head(screen)
@@ -84,7 +85,7 @@ for y in range(0, HEIGHT, 50):
     pygame.draw.line(background, (60, 60, 60), (0, y), (WIDTH, y))
             
 snake = Snake(WIDTH, HEIGHT, HEAD_SIZE)
-food = pygame.Rect(100, 100, 30, 30)
+food = Food(30, WIDTH, HEIGHT, HEAD_SIZE)
 
 while True:
     for event in pygame.event.get():
@@ -92,10 +93,13 @@ while True:
             exit()
             
     screen.blit(background, (0, 0))
-    pygame.draw.rect(screen, (200, 200, 100), food)
+    food.draw(screen)
+
+    if snake.head.colliderect(food.rect):
+        snake.grow()
+        food.respawn([snake.head, *snake.body])
 
     snake.draw(screen)
-    snake.add_body(food)
     snake.move()
     snake.change_direction()
     
